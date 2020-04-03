@@ -1,0 +1,3 @@
+[2020-03-19 14:04:58] controller.ERROR: Heartbeat error, errorCode:27 [] []
+[2020-03-19 14:04:58] controller.ERROR: The group is rebalancing, so a rejoin is needed. [] []
+[2020-03-19 14:05:00] controller.ERROR: The group is rebalancing, so a rejoin is needed. [] []

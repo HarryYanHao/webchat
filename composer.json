@@ -1,0 +1,37 @@
+{
+    "name": "harry/hf",
+    "description": "Harry Framework",
+    "authors": [
+        {
+            "name": "Harry yan",
+            "email":"393464654@qq.com"
+        }
+    ],
+    "license": "MIT",
+    "require":{
+        "noahbuscher/macaw": "dev-master",
+        "monolog/monolog": "^1.23",
+        "symfony/var-dumper": "^3.4",
+        "sabre/http": "^4.2",
+        "nmred/kafka-php": "v0.2.0.8"
+    },
+    "autoload": {
+        "classmap": [
+          "app/controllers",
+          "app/models",
+          "app/providers",
+          "app/service",
+          "app/contract",
+          "app/facades",
+          "app/http",
+          "app/http/middleware",
+          "common",
+          "bootstrap",
+          "framework",
+          "libs"
+        ],
+        "files":[
+            "common/helper/function.php"
+        ]
+    }
+}

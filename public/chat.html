@@ -1,0 +1,202 @@
+<html>
+<head>
+    <title>chat UI</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="" content="">
+    <link href="./css/chat.css" rel="stylesheet">
+    <link href="./css/reset.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+        crossorigin="anonymous">
+
+</head>
+<script>
+    document.getElementsByTagName('body').height=window.innerHeight;
+</script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<body class="box">
+    <div id ="app">
+    	<div class="leftbar">
+        <ul>
+            <li><i class="fas fa-user"></i></li>
+            <li><i class="fas fa-users"></i></li>
+            <li><i class="fas fa-smile"></i></li>
+            <li><i class="fas fa-envelope"></i></li>
+            <li><i class="fas fa-bell"></i></li>
+            <li><i class="fas fa-calendar-alt"></i></li>
+            <li><i class="fas fa-power-off"></i></li>
+        </ul>
+    	</div>
+    <div class="container">
+        <div class="chatbox">
+            <div class="chatleft">
+                <div class="top">
+                    <i class="fas fa-bars" style="font-size: 1.4em"></i>
+                    <input type="text" placeholder="search" style="width: 140px; height: 36px; margin-left: 10px;">
+                    <button class="searchbtn"></style><i class="fas fa-search"></i></button>
+                </div>
+                <div class="center">
+                    <ul>
+                        <li>
+                            <img style="border-radius: 20px; vertical-align: middle;" src="http://placehold.it/40x40">
+                            <span style="margin-left: 10px;">Barack Obama</span>
+                        </li>
+                        <li>
+                            <img style="border-radius: 20px; vertical-align: middle;" src="http://placehold.it/40x40">
+                            <span style="margin-left: 10px;">Barack Obama</span>
+                        </li>
+                        <li>
+                            <img style="border-radius: 20px; vertical-align: middle;" src="http://placehold.it/40x40">
+                            <span style="margin-left: 10px;">Barack Obama</span>
+                        </li>
+                        <li>
+                            <img style="border-radius: 20px; vertical-align: middle;" src="http://placehold.it/40x40">
+                            <span style="margin-left: 10px;">Barack Obama</span>
+                        </li>
+                        <li>
+                            <img style="border-radius: 20px; vertical-align: middle;" src="http://placehold.it/40x40">
+                            <span style="margin-left: 10px;">Barack Obama</span>
+                        </li>
+                        <li>
+                            <img style="border-radius: 20px; vertical-align: middle;" src="http://placehold.it/40x40">
+                            <span style="margin-left: 10px;">Barack Obama</span>
+                        </li>
+                        <li>
+                            <img style="border-radius: 20px; vertical-align: middle;" src="http://placehold.it/40x40">
+                            <span style="margin-left: 10px;">Barack Obama</span>
+                        </li>
+                        <li>
+                            <img style="border-radius: 20px; vertical-align: middle;" src="http://placehold.it/40x40">
+                            <span style="margin-left: 10px;">Barack Obama</span>
+                        </li>
+                        <li>
+                            <img style="border-radius: 20px; vertical-align: middle;" src="http://placehold.it/40x40">
+                            <span style="margin-left: 10px;">Barack Obama</span>
+                        </li>
+                        <li>
+                            <img style="border-radius: 20px; vertical-align: middle;" src="http://placehold.it/40x40">
+                            <span style="margin-left: 10px;">Barack Obama</span>
+                        </li>
+                        <li>
+                            <img style="border-radius: 20px; vertical-align: middle;" src="http://placehold.it/40x40">
+                            <span style="margin-left: 10px;">Barack Obama</span>
+                        </li>
+                        <li>
+                            <img style="border-radius: 20px; vertical-align: middle;" src="http://placehold.it/40x40">
+                            <span style="margin-left: 10px;">Barack Obama</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="chatright">
+                <div class="top">
+                    <img style="border-radius: 20px; vertical-align: middle;" src="http://placehold.it/40x40">
+                    <span style="margin-left: 20px;">Barack Obama</span>
+                    <i class="fas fa-ellipsis-v" style="font-size: 1.4em; position: absolute; right: 20px; color: gray;"></i>
+                </div>
+                <div class="center" id="msgbox">
+                    <ul class = "welcome_ul">
+                            <p class="welcome_msg">{{welcome_message}}</p>
+                        
+                    </ul>
+                    <ul v-for = "(v,i) in message_list">
+                        <li v-bind:class="{msgleft:msg_style(v),msgright:!msg_style(v)}">
+                            <img style="border-radius: 20px; vertical-align: top;" src="http://placehold.it/40x40">
+                            <p class="msgcard">{{v.message}}</p>
+                        </li>
+                    </ul>
+                    </ul>
+                </div>
+                <div class="footer">
+                    <textarea maxlength="800" rows="5" cols="40" style="width: 100%; resize: none; border: none; " :placeholder=type_message v-model="message"></textarea>
+                    <button class="sendbtn" v-on:click="send">发送</button>
+                </div>
+            </div>
+        </div>
+    </div>
+ </div>
+
+
+<script>
+        var wsServer = 'ws://192.168.7.237:9502';
+        var websocket = new WebSocket(wsServer);
+    	var app = new Vue({
+    		el:'#app',
+    		data:{
+                welcome_message:'欢迎来到聊天室!',
+                socket_id:'',
+    			type_message:'请在此输入要发送的内容......',
+    			message:'',
+                rawHtml:'<li style="red">test</li>',
+                message_list:[],
+    		},
+            computed:{
+            
+            },
+            updated:function(){
+                this.$nextTick(function(){
+                    var div = document.getElementById('msgbox')
+                    div.scrollTop = div.scrollHeight
+                })
+            },
+    		methods:{
+    			send:function(){
+    				console.log(this.message)
+    				axios.post('/send',{
+    					send_id:this.socket_id,
+    					message:this.message
+    				}).then(function(response){
+    					console.log(response)
+                        clear()
+    				}).catch(function(err){
+    					console.log(err)
+    				})
+    			},
+                msg_style:function(i){
+                    return i.style == 'msgleft'?true:false
+                }
+    		}
+    	})
+        function clear(){
+            app.$data.message = ''
+        }
+
+        websocket.onopen = function(evt){
+            console.log(evt)
+            console.log("connected to webSocket Server");
+        } 
+        websocket.onclose = function(evt){
+            console.log("disconnected")
+        }
+        websocket.onmessage = function(evt){
+            console.log('Retrieved data from server: ' + evt.data)
+            console.log(evt);
+            data = JSON.parse(evt.data);
+            
+            if(data.type == "socket"){
+                //获取socket_id
+                app.$data.socket_id = data.socket_id
+                return 
+
+            }else if(data.type == "chat"){
+                var message_obj = new Object(); 
+                if(data.message != ""){
+                    message_obj.message = data.message
+                }
+                if(data.send_id == app.$data.socket_id){
+                     message_obj.style = "msgright"
+                }else{
+                    message_obj.style = "msgleft"
+                }
+                app.$data.message_list.push(message_obj)
+                console.log(app.$data.message_list)
+            }
+        
+            
+        }
+        websocket.onerror = function(evt,e){
+            console.log('Errror occured: '+evt.data)
+        }
+</script>
+</body>
+
