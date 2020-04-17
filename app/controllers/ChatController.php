@@ -37,6 +37,7 @@ class ChatController extends BaseController
     $info = ['type' => 'user_list',
     'send_id' => $send_id,'nickname' => $nick_name];
     //redis缓存
+    if(empty($send_id) || is_null($send_id)) return;
     $redis = $this->app->make('redis');
     $key = self::User_List_key;
     $socket_key = self::Socket_List_Key;
